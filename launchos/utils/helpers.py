@@ -31,3 +31,19 @@ def fetch_github_readme(repo_url: str) -> str:
             return response.text
             
     return ""
+
+def save_outputs(hooks: str, tweets: str, reddit: str, hn: str, devto: str):
+    """Saves all generated content to the outputs directory."""
+    import os
+    os.makedirs("outputs", exist_ok=True)
+    
+    with open("outputs/hooks.txt", "w") as f:
+        f.write(hooks)
+    with open("outputs/tweets.txt", "w") as f:
+        f.write(tweets)
+    with open("outputs/reddit.txt", "w") as f:
+        f.write(reddit)
+    with open("outputs/hn.txt", "w") as f:
+        f.write(hn)
+    with open("outputs/devto.txt", "w") as f:
+        f.write(devto)
