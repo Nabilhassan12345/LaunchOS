@@ -3,7 +3,7 @@ from rich.console import Console
 from rich.panel import Panel
 from launchos.utils.helpers import simulate_thinking
 from launchos.core.analyzer import extract_product_context
-from launchos.agents.generator import create_hooks, create_twitter_posts, create_reddit_post, create_hn_post, create_devto_outline, create_strategy
+from launchos.agents.generator import create_hooks, create_twitter_posts, create_reddit_post, create_hn_post, create_devto_outline, create_strategy, get_distribution_strategy
 from launchos.utils.helpers import simulate_thinking, save_outputs
 
 app = typer.Typer(help="LaunchOS: The AI agent that launches your products.")
@@ -54,6 +54,18 @@ def launch(input_data: str = typer.Argument(..., help="GitHub repo URL OR plain 
     console.print("  [dim]- outputs/reddit.txt[/dim]")
     console.print("  [dim]- outputs/hn.txt[/dim]")
     console.print("  [dim]- outputs/devto.txt[/dim]\n")
+        
+    with console.status("[bold cyan]Analyzing distribution channels...", spinner="dots"):
+        simulate_thinking(0.8)
+        distribution = get_distribution_strategy(context["category"])
+        
+    console.print("[bold cyan]🎯 Distribution Targets:[/bold cyan]")
+    console.print("  [dim]Subreddits:[/dim] " + ", ".join(distribution["subreddits"]))
+    console.print("  [dim]Communities:[/dim] " + ", ".join(distribution["communities"]))
+    console.print("\n[bold cyan]💡 Launch Tips:[/bold cyan]")
+    for tip in distribution["tips"]:
+        console.print(f"  [bold]•[/bold] {tip}")
+    console.print()
         
     with console.status("[bold magenta]Building launch strategy...", spinner="dots"):
         simulate_thinking(0.5)
