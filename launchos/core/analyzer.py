@@ -3,29 +3,32 @@ from launchos.utils.helpers import fetch_github_readme
 
 def clean_text(text: str) -> str:
     """Removes excess markdown formatting for cleaner analysis."""
-    # Simple cleaner
-    return text.replace('#', '').replace('*', '').strip()[:1000] # Cap length for speed
+    if not text:
+        return "Unknown product"
+    return text.replace('#', '').replace('*', '').strip()[:1000]
 
 def analyze_with_llm(content: str) -> Dict[str, str]:
     """
     Simulates sending the cleaned content to an LLM (e.g., OpenAI/Gemini)
     to extract the core product schema.
     """
-    # In a production version, this would be an actual API call.
+    if not content:
+        content = "Unknown product"
+        
     text = content.lower()
     
     # 1. Target Audience
     audience = "Developers"
-    if any(k in text for k in ["b2b", "sales", "revenue"]):
+    if any(k in text for k in ["b2b", "sales", "revenue", "enterprise"]):
         audience = "Founders & Sales"
-    elif any(k in text for k in ["design", "ui", "figma"]):
+    elif any(k in text for k in ["design", "ui", "figma", "css"]):
         audience = "Designers"
         
     # 2. Category
     category = "Developer Tool"
     if "saas" in text:
         category = "B2B SaaS"
-    elif "ai" in text or "llm" in text:
+    elif "ai" in text or "llm" in text or "gpt" in text:
         category = "AI Application"
         
     # 3. Product Summary
@@ -33,7 +36,7 @@ def analyze_with_llm(content: str) -> Dict[str, str]:
     
     # 4. Core Value Prop
     value_prop = "Saves time and automates manual tasks."
-    if "fast" in text or "speed" in text:
+    if "fast" in text or "speed" in text or "perform" in text:
         value_prop = "10x faster execution and performance."
         
     return {
@@ -46,19 +49,17 @@ def analyze_with_llm(content: str) -> Dict[str, str]:
 def extract_product_context(input_data: str) -> Dict[str, str]:
     """Analyzes a GitHub URL or raw description to extract product details."""
     
+    if not input_data:
+        raise ValueError("Input data cannot be empty.")
+        
     if input_data.startswith("http"):
-        # 1. Fetch README from GitHub
         raw_content = fetch_github_readme(input_data)
         if not raw_content:
             raw_content = f"Could not fetch README from {input_data}. Assuming generic repo."
     else:
-        # 2. Use plain text description
         raw_content = input_data
         
-    # 3. Clean and extract
     cleaned_content = clean_text(raw_content)
-    
-    # 4. Analyze using LLM
     analysis = analyze_with_llm(cleaned_content)
     
     return analysis
