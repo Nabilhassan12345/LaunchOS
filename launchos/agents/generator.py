@@ -105,3 +105,29 @@ def create_strategy() -> List[str]:
         "Day 0: Cross-post to Hacker News ('Show HN: ...') at 8:00 AM EST.",
         "Day 1: Reply to all comments. Post a 'behind the scenes' technical breakdown."
     ]
+
+def get_distribution_strategy(category: str) -> Dict[str, List[str]]:
+    """Returns smart, hardcoded distribution suggestions based on the product category."""
+    cat_lower = category.lower()
+    
+    # Default fallback
+    strategy = {
+        "subreddits": ["r/SideProject", "r/Entrepreneur", "r/SaaS"],
+        "communities": ["Product Hunt", "Hacker News", "Indie Hackers"],
+        "tips": [
+            "Don't just drop a link. Tell the story of WHY you built it.",
+            "Reply to every single comment within 10 minutes.",
+            "Ask a specific question at the end of your post to drive engagement."
+        ]
+    }
+    
+    if "developer" in cat_lower or "tool" in cat_lower:
+        strategy["subreddits"] = ["r/programming", "r/webdev", "r/Python", "r/reactjs"]
+        strategy["communities"] = ["Hacker News (Show HN)", "Dev.to", "Hashnode", "GitHub Trending (via organic stars)"]
+        strategy["tips"].insert(0, "Make sure your README has a GIF showing the tool in action within 5 seconds.")
+    elif "ai" in cat_lower or "llm" in cat_lower:
+        strategy["subreddits"] = ["r/MachineLearning", "r/LocalLLaMA", "r/OpenAI", "r/SideProject"]
+        strategy["communities"] = ["Hugging Face Spaces", "TheresAnAIForThat", "Product Hunt"]
+        strategy["tips"].insert(0, "Provide a hosted playground link so people can try the AI without signing up.")
+        
+    return strategy
