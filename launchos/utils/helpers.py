@@ -33,7 +33,7 @@ def fetch_github_readme(repo_url: str) -> str:
             
     return ""
 
-def save_outputs(hooks: str, tweets: str, reddit: str, hn: str, devto: str, strategy: str) -> bool:
+def save_outputs(hooks: str, tweets: str, reddit: str, hn: str, devto: str, strategy: str, readme: str) -> bool:
     """Saves all generated content to the outputs directory safely."""
     import os
     try:
@@ -51,6 +51,8 @@ def save_outputs(hooks: str, tweets: str, reddit: str, hn: str, devto: str, stra
             f.write(devto)
         with open("outputs/strategy.txt", "w", encoding="utf-8") as f:
             f.write(strategy)
+        with open("outputs/readme_viral.md", "w", encoding="utf-8") as f:
+            f.write(readme)
         return True
     except IOError as e:
         print(f"Error saving files: {e}")

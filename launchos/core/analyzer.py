@@ -61,5 +61,6 @@ def extract_product_context(input_data: str) -> Dict[str, str]:
         
     cleaned_content = clean_text(raw_content)
     analysis = analyze_with_llm(cleaned_content)
+    analysis["raw_readme"] = raw_content
     
     return analysis

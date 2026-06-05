@@ -100,6 +100,47 @@ Outline:
    - Link to the GitHub repo
    - Call to action for contributors"""
 
+def rewrite_readme(context: Dict[str, str], hooks: List[Tuple[str, int, str]]) -> str:
+    """Transforms a boring README into a high-converting, viral landing page."""
+    category = context.get('category', 'Project')
+    value_prop = context.get('value_prop', 'improves your workflow')
+    audience = context.get('audience', 'developers')
+    best_hook = hooks[0][0] if hooks else f"A {category} that {value_prop}."
+    
+    # In a real LLM implementation, we would extract the features/install steps from context["raw_readme"].
+    # Here, we generate a high-converting template wrapper.
+    
+    return f"""# ⚡ {category}
+
+> {best_hook}
+
+You spend too much time dealing with broken tools. That's why we built this.
+It is an open-source {category} built specifically for {audience} that delivers {value_prop} out of the box.
+
+---
+
+## 🚀 Demo
+*(Insert a high-quality 5-second GIF or video here showing the tool solving the problem)*
+
+---
+
+## ✨ Features
+- **Core Value:** {value_prop}
+- **Zero Bloat:** No unnecessary abstractions.
+- **Built for {audience}:** Designed exactly how you want it to work.
+
+---
+
+## ⚡ Quickstart
+1. Clone the repo
+2. Install dependencies
+3. Run the engine
+
+---
+
+## 🤝 Contributing
+We want to make this the standard {category} for the community. PRs are highly encouraged!"""
+
 def create_strategy() -> List[Dict[str, Any]]:
     """Generates a 7-day launch playbook."""
     return [

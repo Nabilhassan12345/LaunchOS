@@ -3,7 +3,7 @@ from rich.console import Console
 from rich.panel import Panel
 from launchos.utils.helpers import simulate_thinking
 from launchos.core.analyzer import extract_product_context
-from launchos.agents.generator import create_hooks, create_twitter_posts, create_reddit_post, create_hn_post, create_devto_outline, create_strategy, get_distribution_strategy
+from launchos.agents.generator import create_hooks, create_twitter_posts, create_reddit_post, create_hn_post, create_devto_outline, create_strategy, get_distribution_strategy, rewrite_readme
 from launchos.utils.helpers import simulate_thinking, save_outputs
 
 app = typer.Typer(help="LaunchOS: The AI agent that launches your products.")
@@ -48,20 +48,21 @@ def analyze(input_data: str = typer.Argument(..., help="GitHub repo URL OR plain
         console.print(f"     [italic dim]Why it works:[/italic dim] [dim]{explanation}[/dim]")
     console.print()
         
-    with console.status("[bold blue]✍️ Drafting multi-platform content...", spinner="bouncingBar"):
+    with console.status("[bold blue]✍️ Drafting multi-platform content & viral README...", spinner="bouncingBar"):
         simulate_thinking(1.0)
         tweets = create_twitter_posts(context, hooks)
         reddit = create_reddit_post(context)
         hn = create_hn_post(context, hooks)
         devto = create_devto_outline(context)
-        
-        # Format for saving
-        hooks_text = "\n".join([f"{i}. {h[0]}\n   Score: {h[1]}\n   Why it works: {h[2]}\n" for i, h in enumerate(hooks, 1)])
-        tweets_text = "\n\n---\n\n".join(tweets)
+        viral_readme = rewrite_readme(context, hooks)
         
     with console.status("[bold magenta]🧠 Building launch strategy...", spinner="bouncingBar"):
         simulate_thinking(0.5)
         strategy = create_strategy()
+        
+        # Format for saving
+        hooks_text = "\n".join([f"{i}. {h[0]}\n   Score: {h[1]}\n   Why it works: {h[2]}\n" for i, h in enumerate(hooks, 1)])
+        tweets_text = "\n\n---\n\n".join(tweets)
         
         # Format strategy for saving
         strategy_text_lines = []
@@ -72,7 +73,7 @@ def analyze(input_data: str = typer.Argument(..., help="GitHub repo URL OR plain
             strategy_text_lines.append("")
         strategy_text = "\n".join(strategy_text_lines)
         
-        save_outputs(hooks_text, tweets_text, reddit, hn, devto, strategy_text)
+        save_outputs(hooks_text, tweets_text, reddit, hn, devto, strategy_text, viral_readme)
         
     console.print("[bold blue]✅ Content Generated & Saved[/bold blue]")
     console.print("  [dim]- outputs/hooks.txt[/dim]")
@@ -80,7 +81,8 @@ def analyze(input_data: str = typer.Argument(..., help="GitHub repo URL OR plain
     console.print("  [dim]- outputs/reddit.txt[/dim]")
     console.print("  [dim]- outputs/hn.txt[/dim]")
     console.print("  [dim]- outputs/devto.txt[/dim]")
-    console.print("  [dim]- outputs/strategy.txt[/dim]\n")
+    console.print("  [dim]- outputs/strategy.txt[/dim]")
+    console.print("  [dim]- outputs/readme_viral.md[/dim]\n")
         
     with console.status("[bold cyan]🔍 Analyzing distribution channels...", spinner="bouncingBar"):
         simulate_thinking(0.8)
