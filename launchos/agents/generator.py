@@ -1,29 +1,34 @@
 from typing import List, Dict, Tuple, Any
 
-def create_hooks(context: Dict[str, str]) -> List[Tuple[str, int]]:
+def create_hooks(context: Dict[str, str]) -> List[Tuple[str, int, str]]:
     """
     Generates 10 viral hooks based on the product context.
-    Assigns a virality score (1-10) and sorts them best to worst.
+    Assigns a virality score (1-10) and provides a brief psychological explanation.
     """
     audience = context.get("audience", "developers").lower()
     value = context.get("value_prop", "saves you hours").lower()
     category = context.get("category", "tool").lower()
 
-    # Templates: short, curiosity-driven, outcome-focused, "I built X that does Y"
+    # Templates: short, curiosity-driven, outcome-focused
+    # Format: (hook_text, score, explanation)
     raw_hooks = [
-        (f"I built a {category} that {value} so you never have to do it manually again.", 9),
-        (f"Stop wasting time; I built the ultimate {category} for {audience}.", 6),
-        (f"If you are one of the {audience}, you need to see this {category} that {value}.", 8),
-        (f"I got tired of the old way, so I built a {category} that completely changes how we work.", 9),
-        (f"This new {category} I built {value}—and it's completely free.", 10),
-        (f"I built a tiny {category} that {value}. Here is exactly how it works:", 8),
-        (f"Don't build another {category} until you see how this one {value}.", 7),
-        (f"I spent weeks building a {category} so {audience} can get results in seconds.", 9),
-        (f"The hardest part of being in {audience} is over; I built a {category} that fixes it.", 7),
-        (f"I built the exact {category} I wished I had when I started—it {value}.", 8)
+        (f"I built a {category} that {value} so you never have to do it manually again.", 9, "Pain-resolution: hits a frustrating status quo and promises instant relief."),
+        (f"Stop wasting time; I built the ultimate {category} for {audience}.", 6, "Direct command: pattern interrupt that immediately targets the user's demographic."),
+        (f"If you are one of the {audience}, you need to see this {category} that {value}.", 8, "Tribalism: leverages identity to create an exclusive 'in-group' curiosity gap."),
+        (f"I got tired of the old way, so I built a {category} that completely changes how we work.", 9, "Founder story: builds empathy through a relatable 'scratch my own itch' narrative."),
+        (f"This new {category} I built {value}—and it's completely free.", 10, "High ROI: pairs an immense value proposition with zero barrier to entry."),
+        (f"I built a tiny {category} that {value}. Here is exactly how it works:", 8, "Educational teardown: promises transparency and a 'behind the scenes' look."),
+        (f"Don't build another {category} until you see how this one {value}.", 7, "Loss aversion: implies the reader is about to make a mistake if they don't read on."),
+        (f"I spent weeks building a {category} so {audience} can get results in seconds.", 9, "Effort asymmetry: highlights the creator's suffering to justify the user's effortless gain."),
+        (f"The hardest part of being in {audience} is over; I built a {category} that fixes it.", 7, "Bold claim: creates immediate skepticism and curiosity to verify the statement."),
+        (f"I built the exact {category} I wished I had when I started—it {value}.", 8, "Nostalgic empathy: connects deeply with beginners or those struggling with early hurdles.")
     ]
     
-def create_twitter_posts(context: Dict[str, str], hooks: List[Tuple[str, int]]) -> List[str]:
+    # Sort best -> worst
+    sorted_hooks = sorted(raw_hooks, key=lambda x: x[1], reverse=True)
+    return sorted_hooks
+
+def create_twitter_posts(context: Dict[str, str], hooks: List[Tuple[str, int, str]]) -> List[str]:
     """Generates 5 short, engaging Twitter/X posts."""
     value = context.get('value_prop', 'this tool')
     category = context.get('category', 'SaaS')
@@ -53,7 +58,7 @@ So I decided to scratch my own itch. I built a lightweight, open-source alternat
 
 I just made the repo public today. I'd love to get some honest feedback from this community. What features would make this actually useful for your workflow?"""
 
-def create_hn_post(context: Dict[str, str], hooks: List[Tuple[str, int]]) -> str:
+def create_hn_post(context: Dict[str, str], hooks: List[Tuple[str, int, str]]) -> str:
     """Generates a Show HN style post."""
     value = context.get('value_prop', 'saving time')
     category = context.get('category', 'tool')

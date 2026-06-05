@@ -42,9 +42,10 @@ def analyze(input_data: str = typer.Argument(..., help="GitHub repo URL OR plain
         hooks = create_hooks(context)
         
     console.print("[bold yellow]🔥 Top 10 Viral Hooks:[/bold yellow]")
-    for i, (hook_text, score) in enumerate(hooks, 1):
+    for i, (hook_text, score, explanation) in enumerate(hooks, 1):
         color = "green" if score >= 9 else "yellow" if score >= 7 else "white"
         console.print(f"  [bold]{i}.[/bold] {hook_text} [dim](Score: [{color}]{score}/10[/{color}])[dim]")
+        console.print(f"     [italic dim]Why it works:[/italic dim] [dim]{explanation}[/dim]")
     console.print()
         
     with console.status("[bold blue]✍️ Drafting multi-platform content...", spinner="bouncingBar"):
@@ -55,7 +56,7 @@ def analyze(input_data: str = typer.Argument(..., help="GitHub repo URL OR plain
         devto = create_devto_outline(context)
         
         # Format for saving
-        hooks_text = "\n".join([f"{i}. {h[0]} (Score: {h[1]})" for i, h in enumerate(hooks, 1)])
+        hooks_text = "\n".join([f"{i}. {h[0]}\n   Score: {h[1]}\n   Why it works: {h[2]}\n" for i, h in enumerate(hooks, 1)])
         tweets_text = "\n\n---\n\n".join(tweets)
         
     with console.status("[bold magenta]🧠 Building launch strategy...", spinner="bouncingBar"):
