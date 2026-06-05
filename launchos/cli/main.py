@@ -42,18 +42,32 @@ def launch(input_data: str = typer.Argument(..., help="GitHub repo URL OR plain 
         hn = create_hn_post(context, hooks)
         devto = create_devto_outline(context)
         
+    with console.status("[bold magenta]Building launch strategy...", spinner="dots"):
+        simulate_thinking(0.5)
+        strategy = create_strategy()
+        
         # Format for saving
         hooks_text = "\n".join([f"{i}. {h[0]} (Score: {h[1]})" for i, h in enumerate(hooks, 1)])
         tweets_text = "\n\n---\n\n".join(tweets)
         
-        save_outputs(hooks_text, tweets_text, reddit, hn, devto)
+        # Format strategy for saving
+        strategy_text_lines = []
+        for day_plan in strategy:
+            strategy_text_lines.append(f"{day_plan['day']}:")
+            for task in day_plan['tasks']:
+                strategy_text_lines.append(f"- {task}")
+            strategy_text_lines.append("")
+        strategy_text = "\n".join(strategy_text_lines)
+        
+        save_outputs(hooks_text, tweets_text, reddit, hn, devto, strategy_text)
         
     console.print("[bold blue]✓ Content Generated & Saved[/bold blue]")
     console.print("  [dim]- outputs/hooks.txt[/dim]")
     console.print("  [dim]- outputs/tweets.txt[/dim]")
     console.print("  [dim]- outputs/reddit.txt[/dim]")
     console.print("  [dim]- outputs/hn.txt[/dim]")
-    console.print("  [dim]- outputs/devto.txt[/dim]\n")
+    console.print("  [dim]- outputs/devto.txt[/dim]")
+    console.print("  [dim]- outputs/strategy.txt[/dim]\n")
         
     with console.status("[bold cyan]Analyzing distribution channels...", spinner="dots"):
         simulate_thinking(0.8)
@@ -67,15 +81,14 @@ def launch(input_data: str = typer.Argument(..., help="GitHub repo URL OR plain 
         console.print(f"  [bold]•[/bold] {tip}")
     console.print()
         
-    with console.status("[bold magenta]Building launch strategy...", spinner="dots"):
-        simulate_thinking(0.5)
-        strategy = create_strategy()
-        
     console.print("[bold magenta]🗓️ Launch Playbook:[/bold magenta]")
-    for step in strategy:
-        console.print(f"  [bold]•[/bold] {step}")
+    for day_plan in strategy:
+        console.print(f"[bold]{day_plan['day']}[/bold]")
+        for task in day_plan['tasks']:
+            console.print(f"  [bold]•[/bold] {task}")
+        console.print()
         
-    console.print("\n[bold green]Done! You are ready to launch.[/bold green] 🚀\n")
+    console.print("[bold green]Done! You are ready to launch.[/bold green] 🚀\n")
 
 if __name__ == "__main__":
     app()
