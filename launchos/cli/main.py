@@ -20,9 +20,16 @@ def analyze(input_data: str = typer.Argument(..., help="GitHub repo URL OR plain
     console.print(Panel(f"[bold cyan]⚡ LaunchOS V1.0[/bold cyan]\n[italic]The open-source AI agent that launches your products.[/italic]", border_style="cyan", padding=(1, 2)))
     console.print()
     
-    with console.status("[bold green]📡 Fetching and analyzing product...", spinner="bouncingBar"):
-        simulate_thinking(1.2)
-        context = extract_product_context(input_data)
+    try:
+        with console.status("[bold green]📡 Fetching and analyzing product...", spinner="bouncingBar"):
+            simulate_thinking(1.2)
+            context = extract_product_context(input_data)
+    except ValueError as e:
+        console.print(Panel(f"[bold red]❌ Error:[/bold red] {str(e)}", border_style="red"))
+        raise typer.Exit(code=1)
+    except Exception as e:
+        console.print(Panel(f"[bold red]❌ Unexpected Error:[/bold red] Failed to analyze input. ({str(e)})", border_style="red"))
+        raise typer.Exit(code=1)
         
     console.print("[bold green]✨ Analysis Complete![/bold green]\n")
     console.print(f"  [cyan]📦 Category:[/cyan]        [bold white]{context['category']}[/bold white]")
