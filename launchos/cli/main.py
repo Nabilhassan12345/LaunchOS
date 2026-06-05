@@ -3,7 +3,8 @@ from rich.console import Console
 from rich.panel import Panel
 from launchos.utils.helpers import simulate_thinking
 from launchos.core.analyzer import extract_product_context
-from launchos.agents.generator import create_hooks, create_posts, create_strategy
+from launchos.agents.generator import create_hooks, create_twitter_posts, create_reddit_post, create_hn_post, create_devto_outline, create_strategy
+from launchos.utils.helpers import simulate_thinking, save_outputs
 
 app = typer.Typer(help="LaunchOS: The AI agent that launches your products.")
 console = Console()
@@ -34,13 +35,25 @@ def launch(input_data: str = typer.Argument(..., help="GitHub repo URL OR plain 
         console.print(f"  {i}. {hook_text} [dim](Score: [{color}]{score}/10[/{color}])[dim]")
     console.print()
         
-    with console.status("[bold blue]Drafting social copy...", spinner="dots"):
+    with console.status("[bold blue]Drafting multi-platform content...", spinner="dots"):
         simulate_thinking(1.0)
-        posts = create_posts(context, hooks)
+        tweets = create_twitter_posts(context, hooks)
+        reddit = create_reddit_post(context)
+        hn = create_hn_post(context, hooks)
+        devto = create_devto_outline(context)
         
-    console.print("[bold blue]🐦 Social Posts:[/bold blue]")
-    for post in posts:
-        console.print(Panel(post, border_style="blue"))
+        # Format for saving
+        hooks_text = "\n".join([f"{i}. {h[0]} (Score: {h[1]})" for i, h in enumerate(hooks, 1)])
+        tweets_text = "\n\n---\n\n".join(tweets)
+        
+        save_outputs(hooks_text, tweets_text, reddit, hn, devto)
+        
+    console.print("[bold blue]✓ Content Generated & Saved[/bold blue]")
+    console.print("  [dim]- outputs/hooks.txt[/dim]")
+    console.print("  [dim]- outputs/tweets.txt[/dim]")
+    console.print("  [dim]- outputs/reddit.txt[/dim]")
+    console.print("  [dim]- outputs/hn.txt[/dim]")
+    console.print("  [dim]- outputs/devto.txt[/dim]\n")
         
     with console.status("[bold magenta]Building launch strategy...", spinner="dots"):
         simulate_thinking(0.5)
