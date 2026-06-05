@@ -28,9 +28,10 @@ def launch(input_data: str = typer.Argument(..., help="GitHub repo URL OR plain 
         simulate_thinking(0.8)
         hooks = create_hooks(context)
         
-    console.print("[bold yellow]🔥 Viral Hooks:[/bold yellow]")
-    for i, hook in enumerate(hooks, 1):
-        console.print(f"  {i}. {hook}")
+    console.print("[bold yellow]🔥 Top 10 Viral Hooks:[/bold yellow]")
+    for i, (hook_text, score) in enumerate(hooks, 1):
+        color = "green" if score >= 9 else "yellow" if score >= 7 else "white"
+        console.print(f"  {i}. {hook_text} [dim](Score: [{color}]{score}/10[/{color}])[dim]")
     console.print()
         
     with console.status("[bold blue]Drafting social copy...", spinner="dots"):
