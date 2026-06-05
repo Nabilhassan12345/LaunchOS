@@ -9,16 +9,20 @@ app = typer.Typer(help="LaunchOS: The AI agent that launches your products.")
 console = Console()
 
 @app.command()
-def launch(description: str = typer.Argument(..., help="Describe your product in one sentence")):
+def launch(input_data: str = typer.Argument(..., help="GitHub repo URL OR plain text description")):
     """Analyze a product idea and generate a viral launch strategy."""
     
     console.print(Panel(f"[bold magenta]🚀 LaunchOS Initializing...[/bold magenta]", border_style="magenta"))
     
-    with console.status("[bold green]Analyzing product and audience...", spinner="dots"):
+    with console.status("[bold green]Fetching and analyzing product...", spinner="dots"):
         simulate_thinking(1.2)
-        context = extract_product_context(description)
+        context = extract_product_context(input_data)
         
-    console.print(f"[bold green]✓[/bold green] Target Audience: [bold]{context['audience']}[/bold]\n")
+    console.print("[bold green]✓ Analysis Complete[/bold green]\n")
+    console.print(f"  [dim]Category:[/dim] [bold]{context['category']}[/bold]")
+    console.print(f"  [dim]Target Audience:[/dim] [bold]{context['audience']}[/bold]")
+    console.print(f"  [dim]Value Prop:[/dim] [bold]{context['value_prop']}[/bold]")
+    console.print(f"  [dim]Summary:[/dim] {context['summary']}\n")
     
     with console.status("[bold yellow]Generating viral hooks...", spinner="dots"):
         simulate_thinking(0.8)
