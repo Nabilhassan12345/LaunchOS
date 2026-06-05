@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Any
 
 def create_hooks(context: Dict[str, str]) -> List[Tuple[str, int]]:
     """
@@ -95,15 +95,59 @@ Outline:
    - Link to the GitHub repo
    - Call to action for contributors"""
 
-def create_strategy() -> List[str]:
-    """Generates a day-by-day launch checklist."""
+def create_strategy() -> List[Dict[str, Any]]:
+    """Generates a 7-day launch playbook."""
     return [
-        "Day -2: Post a 'teaser' screenshot on Twitter/X.",
-        "Day -1: DM 15 highly engaged followers offering early access.",
-        "Day 0: Launch on Product Hunt at 12:01 AM PST.",
-        "Day 0: Publish the main launch thread on Twitter/X.",
-        "Day 0: Cross-post to Hacker News ('Show HN: ...') at 8:00 AM EST.",
-        "Day 1: Reply to all comments. Post a 'behind the scenes' technical breakdown."
+        {
+            "day": "Day 1",
+            "tasks": [
+                "Post 'teaser' screenshot or architecture diagram on Twitter/X",
+                "DM 15 highly engaged followers or beta users offering early access"
+            ]
+        },
+        {
+            "day": "Day 2",
+            "tasks": [
+                "Launch on Product Hunt at 12:01 AM PST",
+                "Publish the main launch thread on Twitter/X",
+                "Cross-post to Hacker News ('Show HN: ...') at 8:00 AM EST"
+            ]
+        },
+        {
+            "day": "Day 3",
+            "tasks": [
+                "Reply to all comments on PH and HN",
+                "Post your story-style Reddit post in targeted subreddits"
+            ]
+        },
+        {
+            "day": "Day 4",
+            "tasks": [
+                "Publish your Dev.to or Hashnode technical article",
+                "Share the article link on Twitter/X and LinkedIn"
+            ]
+        },
+        {
+            "day": "Day 5",
+            "tasks": [
+                "Reach out to 5 niche newsletters to feature your tool",
+                "Monitor GitHub stars and respond to early issues/PRs"
+            ]
+        },
+        {
+            "day": "Day 6",
+            "tasks": [
+                "Post a 'behind the scenes' or 'lessons learned' thread on Twitter/X",
+                "Engage in 5 external community discussions (Discord/Slack)"
+            ]
+        },
+        {
+            "day": "Day 7",
+            "tasks": [
+                "Publish a 1-week recap (Traffic, Stars, Users)",
+                "Rest and plan the roadmap based on user feedback"
+            ]
+        }
     ]
 
 def get_distribution_strategy(category: str) -> Dict[str, List[str]]:
