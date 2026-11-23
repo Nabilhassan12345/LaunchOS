@@ -10,9 +10,9 @@ You spend 3 weeks building the perfect app, and 3 minutes launching it. That's w
 ## 🚀 Demo
 
 ```bash
-python main.py analyze "https://github.com/user/my-awesome-repo"
+python main.py "https://github.com/user/my-awesome-repo"
 ```
-*(Insert animated GIF here showing the CLI generating hooks and playbooks)*
+![LaunchOS CLI run on "A fast, minimal markdown editor for developers"](docs/images/launchos-cli-run.png)
 
 ---
 
@@ -41,7 +41,7 @@ No bloated orchestration frameworks. Zero abstraction. Just pure execution.
    ```
 3. **Run the agent:**
    ```bash
-   python main.py analyze "A fast, minimal markdown editor for developers"
+   python main.py "A fast, minimal markdown editor for developers"
    ```
 
 ---
