@@ -100,4 +100,4 @@ The open-source AI agent that launches your products.
 
 ## 🤝 Contributing
 
-We want to make this the ultimate open-source launch engine for developers. PRs are highly encouraged!
+We want to make this a genuinely useful open-source launch tool for developers. PRs are highly encouraged!
